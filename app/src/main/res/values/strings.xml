@@ -8,6 +8,10 @@
     <string name="BTN_Normal">Normal</string>
     <string name="BTN_Hard">Hard</string>
     <string name="BTN_Back_Dif">Back</string>
+    <string name="empty"></string>
+    <string name="board_size">Board Size is 4X4</string>
+    <string name="row">row</string>
+    <string name="col">col</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

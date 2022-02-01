@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:id="@+id/board_size"
+        android:text="@string/board_size"
+        android:title="@string/board_size"
+        app:key="Borad_size">
+        <EditTextPreference
+            android:id="@+id/Board_row"
+            android:defaultValue="true"
+            android:key="board_row"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/row" />
+        <EditTextPreference
+            android:id="@+id/Board_col"
+            android:defaultValue="true"
+            android:key="board_col"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/col" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/MI_defultSetings"
+        android:icon="@drawable/setings_icon"
+        android:title="@string/empty"
+        app:showAsAction="always" />
+</menu>
