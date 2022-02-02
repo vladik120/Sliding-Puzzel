@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
@@ -18,11 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFragListener,DifficultyFrag.DifficultyFragListener,ExitDialog.ExitDialogListener {
+public class MainActivity extends AppCompatActivity
+        implements MenuFrag.MenuFragListener,DifficultyFrag.DifficultyFragListener,ExitDialog.ExitDialogListener
+        , FragBoard.FragBoardListener, BoardCellAdapter.BoardCellAdapterListener {
     static boolean PreferenceOpen = false;
 
     @Override
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFrag
         else {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.MainFragCon, MenuFrag.class,null, "MENUFRAG")
-                    //	.addToBackStack(null)
+                    .addToBackStack(null)
                     .commit();
         }
         getSupportFragmentManager().executePendingTransactions();
@@ -59,13 +58,12 @@ public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFrag
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.MainFragCon, DifficultyFrag.class, null,"DifficultyFrag")
-                        .addToBackStack("BBB")
+                        .addToBackStack(null)
                         .commit();
                 getSupportFragmentManager().executePendingTransactions();
-                frag = (DifficultyFrag)getSupportFragmentManager().findFragmentByTag("DifficultyFrag");
                 break;
             case "Exit":
-                showDialog();
+                showDialogExit();
                 break;
             case "Score":
                 break;
@@ -76,9 +74,14 @@ public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFrag
 
     @Override
     public void setActionDifficultyFrag(String BTN) {
-        MenuFrag frag;
         switch (BTN){
             case "Easy":
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.MainFragCon, FragBoard.class, null,"FragBoard")
+                        .addToBackStack(null)
+                        .commit();
+                getSupportFragmentManager().executePendingTransactions();
                 break;
             case "Normal":
                 break;
@@ -87,11 +90,10 @@ public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFrag
             case "Back":
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.MainFragCon, MenuFrag.class, null,"MENUFRAG")
-                        .addToBackStack("BBB")
+                        .replace(R.id.MainFragCon, MenuFrag.class, null,"MenuFrag")
+                        .addToBackStack(null)
                         .commit();
                 getSupportFragmentManager().executePendingTransactions();
-                frag = (MenuFrag)getSupportFragmentManager().findFragmentByTag("MENUFRAG");
                 break;
 
         }
@@ -114,16 +116,46 @@ public class MainActivity extends AppCompatActivity implements MenuFrag.MenuFrag
         return super.onOptionsItemSelected(item);
     }
 
-    void showDialog() {
+    void showDialogExit() {
         FragmentManager fm = getSupportFragmentManager();
         ExitDialog exitDialog = ExitDialog.newInstance("Closing the application");
         exitDialog.show(fm, "fragment_alert");
+    }
+
+    void showSimpleDialog(String title,String text){
+        FragmentManager fm = getSupportFragmentManager();
+        SimpleDialog simpleDialog = SimpleDialog.newInstance(title,text);
+        simpleDialog.show(fm, "fragment_alert");
     }
 
     @Override
     public void onExitClick() {
         finish();
         System.exit(0);
+    }
+
+    @Override
+    public void setBackFromGame() {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.MainFragCon, DifficultyFrag.class, null,"DifficultyFrag")
+                .addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+
+
+    @Override
+    public void GameFinished(int time,int move) {
+        showSimpleDialog("Congratulation","you finished the game\nMove - "+move+" Time - "+time/1000+" [Sec]");
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.MainFragCon, MenuFrag.class, null,"MenuFrag")
+                .addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     public static class MySettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {

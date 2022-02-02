@@ -4,31 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="100dp"
+    android:layout_marginRight="50dp"
+    android:layout_marginBottom="10dp"
+    tools:context=".FragBoard">
 
-    <TextView
-        android:id="@+id/textView2"
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RV_Board_Game"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/BTN_Back_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Game_Name"
-        android:textSize="34sp"
+        android:text="@string/BTN_Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintVertical_bias="0.992" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/MainFragCon"
-        android:name="com.example.finalproject.MenuFrag"
-        android:layout_width="350dp"
-        android:layout_height="570dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.751"
-        tools:layout="@layout/fragment_frag_board" />
 </androidx.constraintlayout.widget.ConstraintLayout>

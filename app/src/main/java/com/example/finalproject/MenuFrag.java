@@ -15,8 +15,6 @@ import android.widget.Button;
 
 public class MenuFrag extends Fragment {
 
-
-
     Button Btn_Play;
     Button Btn_Score;
     Button Btn_Exit;

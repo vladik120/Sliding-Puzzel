@@ -41,6 +41,7 @@ public class DifficultyFrag extends Fragment {
         Btn_Back = ((Button)view.findViewById(R.id.BTN_Back));
 
         Btn_Back.setOnClickListener(new Back());
+        Btn_Easy.setOnClickListener(new Easy());
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -60,6 +61,12 @@ public class DifficultyFrag extends Fragment {
     private class Back implements View.OnClickListener {
         public void onClick(View arg0) {
             listener.setActionDifficultyFrag("Back");
+        }
+    }
+
+    private class Easy implements View.OnClickListener {
+        public void onClick(View arg0) {
+            listener.setActionDifficultyFrag("Easy");
         }
     }
 

@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/frag_board.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/frag_game_cell.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/fragment_difficulty.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/fragment_frag_board.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/fragment_frag_cell.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/layout/fragment_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/menu/defult_setings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/FInalProject/app/src/main/res/xml/preferences.xml" value="0.25416666666666665" />
