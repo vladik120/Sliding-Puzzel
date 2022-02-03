@@ -32,16 +32,18 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
     private Long Start;
     private Long End;
     private String FILENAME ;
+    private String difficulty;
 
-    public BoardCellAdapter(Context context) {
+    public BoardCellAdapter(Context context, String difficulty) {
         Start =  System.currentTimeMillis();
         SharedPreferences sharedPref = context.getSharedPreferences(
                 context.getResources().getString(R.string.preference_file_key), context.MODE_PRIVATE);
         row = Integer.parseInt(sharedPref.getString("board_row", "4"));
         col = Integer.parseInt(sharedPref.getString("board_col", "4"));
         size = row*col;
-        board = Board.GenerateBoard(size);
+        board = Board.GenerateBoard(size,difficulty);
         this.context = context;
+        this.difficulty = difficulty;
         listener = (BoardCellAdapterListener)context;
         Board.ShowBoardStatus(board);
         FILENAME = context.getResources().getString(R.string.score_save);
@@ -109,7 +111,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
                             End =  System.currentTimeMillis();
                             Log.i("Game status","Finish");
                             Long time = End-Start;
-                            AddToFile(row,col,MoveCount,time.intValue()/1000);
+                            AddToFile(row,col,MoveCount,time.intValue()/1000,difficulty);
                             listener.GameFinished(time.intValue(),MoveCount);
                         }
                     }
@@ -123,9 +125,9 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
         void GameFinished(int time ,int move);
     }
 
-    public void AddToFile(int row,int col,int move,int time){
+    public void AddToFile(int row, int col, int move, int time, String difficulty){
         String data = ReadFromFile();
-        data += row + " " + col + " " + move + " " + time+"\n";
+        data += row + " " + col + " " + move + " " + time+" " + difficulty + "\n";
         try {
             FileOutputStream fos = context.openFileOutput( FILENAME ,context.MODE_PRIVATE);
             Log.i("AddToFile()",data);

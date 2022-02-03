@@ -74,6 +74,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
         private TextView TV_Move;
         private TextView TV_Time;
         private TextView TV_Score;
+        private TextView TV_Difficulty;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +82,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
             TV_Move = itemView.findViewById(R.id.TV_Moves);
             TV_Time = itemView.findViewById(R.id.TV_Time);
             TV_Score = itemView.findViewById(R.id.TV_Score);
+            TV_Difficulty = itemView.findViewById(R.id.TV_Difficulty);
         }
 
         public void fillData(int position) {
@@ -100,16 +102,19 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
             int col = Integer.valueOf(score[1]);
             int move = Integer.valueOf(score[2]);
             int time = Integer.valueOf(score[3]);
+            CharSequence  difficulty = score[4];
 
             Log.i("ScoreBoardAdapter", "row "+ row);
             Log.i("ScoreBoardAdapter", "col "+col);
             Log.i("ScoreBoardAdapter", "move "+move);
             Log.i("ScoreBoardAdapter", "time "+time);
+            Log.i("ScoreBoardAdapter", "difficulty "+difficulty);
 
             TV_Boars_Size.setText(score[0]+"X"+score[1]);
             TV_Move.setText(score[2]);
             TV_Time.setText(score[3]);
             TV_Score.setText(String.valueOf(value));
+            TV_Difficulty.setText(difficulty);
         }
     }
 

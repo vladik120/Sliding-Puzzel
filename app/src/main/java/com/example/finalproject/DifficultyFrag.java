@@ -42,6 +42,8 @@ public class DifficultyFrag extends Fragment {
 
         Btn_Back.setOnClickListener(new Back());
         Btn_Easy.setOnClickListener(new Easy());
+        Btn_Normal.setOnClickListener(new Normal());
+        Btn_Hard.setOnClickListener(new Hard());
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -67,6 +69,18 @@ public class DifficultyFrag extends Fragment {
     private class Easy implements View.OnClickListener {
         public void onClick(View arg0) {
             listener.setActionDifficultyFrag("Easy");
+        }
+    }
+
+    private class Normal implements View.OnClickListener {
+        public void onClick(View arg0) {
+            listener.setActionDifficultyFrag("Normal");
+        }
+    }
+
+    private class Hard implements View.OnClickListener {
+        public void onClick(View arg0) {
+            listener.setActionDifficultyFrag("Hard");
         }
     }
 

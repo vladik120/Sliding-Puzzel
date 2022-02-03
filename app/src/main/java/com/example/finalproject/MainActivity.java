@@ -89,16 +89,13 @@ public class MainActivity extends AppCompatActivity
     public void setActionDifficultyFrag(String BTN) {
         switch (BTN){
             case "Easy":
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.MainFragCon, FragBoard.class, null,"FragBoard")
-                        .addToBackStack(null)
-                        .commit();
-                getSupportFragmentManager().executePendingTransactions();
+                setFragBoard("Easy");
                 break;
             case "Normal":
+                setFragBoard("Normal");
                 break;
             case "Hard":
+                setFragBoard("Hard");
                 break;
             case "Back":
                 getSupportFragmentManager().beginTransaction()
@@ -110,6 +107,19 @@ public class MainActivity extends AppCompatActivity
                 break;
 
         }
+    }
+
+    public void setFragBoard(String difficulty){
+        Bundle bundle = new Bundle();
+        bundle.putString("difficulty", difficulty);
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.MainFragCon, FragBoard.class, bundle,"FragBoard")
+                .addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.widget.Button;
 
 public class FragBoard extends Fragment  {
     FragBoard.FragBoardListener listener;
+    private String difficulty;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,7 @@ public class FragBoard extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        difficulty = this.getArguments().getString("difficulty");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_frag_board, container, false);
     }
@@ -43,7 +45,7 @@ public class FragBoard extends Fragment  {
         RecyclerView rvContacts = (RecyclerView) view.findViewById(R.id.RV_Board_Game);
 
         // Create adapter passing in the sample user data
-        BoardCellAdapter adapter = new BoardCellAdapter(view.getContext());
+        BoardCellAdapter adapter = new BoardCellAdapter(view.getContext(),difficulty);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
@@ -63,8 +65,6 @@ public class FragBoard extends Fragment  {
         }
         super.onAttach(context);
     }
-
-
 
     private class Back implements View.OnClickListener {
         public void onClick(View arg0) {

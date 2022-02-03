@@ -8,26 +8,31 @@ import java.util.Random;
 
 public class Board {
 
-    public static Cell[] GenerateBoard(int size) {
+    public static Cell[] GenerateBoard(int size, String difficulty) {
         Cell[] board = new Cell[size];
         int[] check = new int[size];
         Random rand = new Random();
         int blank = rand.nextInt(size);
-        int number = -1;
+        int numberRand =size;
+        int count=0;
+        int number = 0;
+        int index = 0;
         Arrays.fill(check, 0);
+        int dif ;
+        switch (difficulty){
+            case "Easy":
+                numberRand = size/3;
+                break;
+            case "Normal":
+                numberRand = (size/4)*3;
+                break;
+            case "Hard":
+                numberRand = size;
+                break;
 
-        /*for (int i = 0; i < size; i++) {
-            if (i == blank)
-                board[i] = null;
-            else {
-                do {
-                    number = rand.nextInt(size - 1);
-                } while (check[number] == 1);
-                check[number] = 1;
-                board[i] = new Cell(String.valueOf(number));
+        }
 
-            }
-        }*/
+
 
         for (int i = 0; i <= size-3; i++) {
             board[i] = new Cell(String.valueOf(i));
@@ -86,6 +91,14 @@ public class Board {
         }
         Log.i("ShowBoardStatus - ", "end.");
 
+    }
+
+    public static int checkEmpty(Cell[] board){
+        for (int i = 0; i < board.length; i++) {
+            if(board[i].getNumber().equals("-1"))
+                return i;
+        }
+        return -1;
     }
 
 
