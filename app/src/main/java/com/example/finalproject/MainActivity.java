@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements MenuFrag.MenuFragListener,DifficultyFrag.DifficultyFragListener,ExitDialog.ExitDialogListener
-        , FragBoard.FragBoardListener, BoardCellAdapter.BoardCellAdapterListener {
+        , FragBoard.FragBoardListener, BoardCellAdapter.BoardCellAdapterListener, ScoreBoard.ScoreBoardListener {
     static boolean PreferenceOpen = false;
 
     @Override
@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity
                 showDialogExit();
                 break;
             case "Score":
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.MainFragCon, ScoreBoard.class, null,"ScoreBoard")
+                        .addToBackStack(null)
+                        .commit();
+                getSupportFragmentManager().executePendingTransactions();
                 break;
 
         }
@@ -158,9 +164,19 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().executePendingTransactions();
     }
 
+    @Override
+    public void setBackFromScore() {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.MainFragCon, MenuFrag.class, null,"MenuFrag")
+                .addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
     public static class MySettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         private final int MinSize = 3;
-        private final int MaxSize = 16;
+        private final int MaxSize = 8;
 
 
         @Override
@@ -198,7 +214,7 @@ public class MainActivity extends AppCompatActivity
             int size;
             try {
                 size = Integer.parseInt(sizeString);
-                if (size>=MaxSize || size<MinSize){
+                if (size>MaxSize || size<MinSize){
                     ToastMessage("the "+key+" not right");
                     sharedPreferences.edit().putString(key,"4").commit();
                     editTextKey.setText("4");

@@ -87,4 +87,9 @@ public class Board {
         Log.i("ShowBoardStatus - ", "end.");
 
     }
+
+    public static int ScoreCalc(int row,int col,int move,int time){
+        double score = (1/(Math.sqrt(time)+Math.sqrt(move)))*(row*col*100);
+        return (int)score;
+    }
 }

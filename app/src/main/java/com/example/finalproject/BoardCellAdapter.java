@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.ViewHolder> {
@@ -25,6 +31,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
     private int MoveCount = 0;
     private Long Start;
     private Long End;
+    private String FILENAME ;
 
     public BoardCellAdapter(Context context) {
         Start =  System.currentTimeMillis();
@@ -37,6 +44,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
         this.context = context;
         listener = (BoardCellAdapterListener)context;
         Board.ShowBoardStatus(board);
+        FILENAME = context.getResources().getString(R.string.score_save);
     }
 
     @NonNull
@@ -76,9 +84,11 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
             int number ;
             if(cell == null){
                 BTN_Cell.setText("");
+                BTN_Cell.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }else {
                 number = Integer.parseInt(cell.getNumber());
                 BTN_Cell.setText(String.valueOf(number+1));
+                BTN_Cell.setBackgroundResource(R.drawable.frame_button);
             }
 
             BTN_Cell.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +109,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
                             End =  System.currentTimeMillis();
                             Log.i("Game status","Finish");
                             Long time = End-Start;
+                            AddToFile(row,col,MoveCount,time.intValue()/1000);
                             listener.GameFinished(time.intValue(),MoveCount);
                         }
                     }
@@ -110,6 +121,44 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
 
     public interface BoardCellAdapterListener{
         void GameFinished(int time ,int move);
+    }
+
+    public void AddToFile(int row,int col,int move,int time){
+        String data = ReadFromFile();
+        data += row + " " + col + " " + move + " " + time+"\n";
+        try {
+            FileOutputStream fos = context.openFileOutput( FILENAME ,context.MODE_PRIVATE);
+            Log.i("AddToFile()",data);
+            fos.write((data).getBytes());
+            fos.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String ReadFromFile(){
+        try {
+            FileInputStream fin = context.openFileInput( FILENAME );
+            ByteBuffer bf = ByteBuffer.allocate(1000*10);
+            int numberOfBytes = fin.read(bf.array());
+            fin.close();
+            if(numberOfBytes != -1) {
+                String convert = new String(bf.array());
+                convert = convert.substring(0, numberOfBytes);
+                return convert;
+            }
+            return "";
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public void ToastMessage(CharSequence  MSG){

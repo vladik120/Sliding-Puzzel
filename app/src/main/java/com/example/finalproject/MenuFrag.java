@@ -41,6 +41,7 @@ public class MenuFrag extends Fragment {
 
         Btn_Play.setOnClickListener(new Play());
         Btn_Exit.setOnClickListener(new Exit());
+        Btn_Score.setOnClickListener(new Score());
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -66,6 +67,12 @@ public class MenuFrag extends Fragment {
     private class Exit implements View.OnClickListener {
         public void onClick(View arg0) {
             listener.setActionMenuFrag("Exit");
+        }
+    }
+
+    private class Score implements View.OnClickListener {
+        public void onClick(View arg0) {
+            listener.setActionMenuFrag("Score");
         }
     }
 

@@ -7,10 +7,12 @@
     tools:context=".FragCell">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BTN_Cell"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/frame_button"
         android:text="@string/empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
