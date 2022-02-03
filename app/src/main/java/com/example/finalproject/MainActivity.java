@@ -182,8 +182,11 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void GameFinished(int time,int move) {
-        showSimpleDialog("Congratulation","you finished the game\nMove - "+move+" Time - "+time/1000+" [Sec]");
+    public void GameFinished(int time,int move,int score) {
+        showSimpleDialog("  Congratulation",
+                "  You finished the game" +
+                        "\n                     Move - "+move+" Time - "+time/1000+" [Sec]" +
+                        "\n                              Score - "+score);
 
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)

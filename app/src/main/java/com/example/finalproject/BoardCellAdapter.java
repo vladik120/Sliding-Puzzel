@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.FileInputStream;
@@ -19,7 +18,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.List;
 
 public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.ViewHolder> {
     private Cell[] board;
@@ -90,7 +88,9 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
             }else {
                 number = Integer.parseInt(cell.getNumber());
                 BTN_Cell.setText(String.valueOf(number+1));
-                BTN_Cell.setBackgroundResource(R.drawable.frame_button);
+                if(board[position].getNumber().equals(String.valueOf(position)))
+                    BTN_Cell.setBackgroundResource(R.drawable.button_in_place);
+                else BTN_Cell.setBackgroundResource(R.drawable.button_not_in_place);
             }
 
             BTN_Cell.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +112,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
                             Log.i("Game status","Finish");
                             Long time = End-Start;
                             AddToFile(row,col,MoveCount,time.intValue()/1000,difficulty);
-                            listener.GameFinished(time.intValue(),MoveCount);
+                            listener.GameFinished(time.intValue(),MoveCount,Calculate.ScoreCalc(row,col,MoveCount,time.intValue()/1000,difficulty));
                         }
                     }
                 }
@@ -122,7 +122,7 @@ public class BoardCellAdapter extends RecyclerView.Adapter<BoardCellAdapter.View
     }
 
     public interface BoardCellAdapterListener{
-        void GameFinished(int time ,int move);
+        void GameFinished(int time ,int move,int score);
     }
 
     public void AddToFile(int row, int col, int move, int time, String difficulty){
