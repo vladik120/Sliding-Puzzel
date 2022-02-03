@@ -14,18 +14,33 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.ViewHolder>{
     private Context context;
     private String FILENAME;
     private String[] Scores;
+    private String ScoreEmpty;
+    private ArrayList<Integer> array;
+    private ArrayList<Integer> sortArray;
 
     public ScoreBoardAdapter(Context context) {
+        String check;
         this.context = context;
         FILENAME = context.getResources().getString(R.string.score_save);
-        Scores = ReadFromFile().split("\n");
-        Log.i("ScoreBoardAdapter", Arrays.toString(Scores) + Scores.length);
+        ScoreEmpty = ReadFromFile();
+        if(ScoreEmpty.equals(""))
+            return;
+        Scores = ScoreEmpty.split("\n");
+
+
+        array = Calculate.ScoreByHigh(Scores);
+        sortArray = Calculate.ScoreByHigh(Scores);
+        Collections.sort(sortArray);
+        Log.i("ScoreBoardAdapter", sortArray.toString());
+
     }
 
     @NonNull
@@ -44,12 +59,13 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ScoreBoardAdapter.ViewHolder holder, int position) {
-        Log.i("onBindViewHolder","position "+position);
         holder.fillData(position);
     }
 
     @Override
     public int getItemCount() {
+        if(ScoreEmpty.equals(""))
+            return 0;
         return Scores.length;
     }
 
@@ -68,18 +84,32 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
         }
 
         public void fillData(int position) {
-            Log.i("fillData","position "+position);
-            String score[] = Scores[position].split(" ");
+            if(Scores.length == 0)
+                return;
+            int value = sortArray.get(sortArray.size()-1);
+            int index = array.indexOf(value);
+            sortArray.remove(sortArray.size()-1);
+
+
+            Log.i("ScoreBoardAdapter", "sort array after remove"+ sortArray.toString());
+            Log.i("ScoreBoardAdapter", "Value "+value);
+            Log.i("ScoreBoardAdapter", "index "+index);
+
+            String score[] = Scores[index].split(" ");
             int row = Integer.valueOf(score[0]);
             int col = Integer.valueOf(score[1]);
             int move = Integer.valueOf(score[2]);
             int time = Integer.valueOf(score[3]);
-            int SC = Board.ScoreCalc(row,col,move,time);
-            Log.i("fillData",position+Arrays.toString(score));
-            TV_Boars_Size.setText(row+"X"+col);
-            TV_Move.setText(move);
-            TV_Time.setText(time);
-            TV_Score.setText(SC);
+
+            Log.i("ScoreBoardAdapter", "row "+ row);
+            Log.i("ScoreBoardAdapter", "col "+col);
+            Log.i("ScoreBoardAdapter", "move "+move);
+            Log.i("ScoreBoardAdapter", "time "+time);
+
+            TV_Boars_Size.setText(score[0]+"X"+score[1]);
+            TV_Move.setText(score[2]);
+            TV_Time.setText(score[3]);
+            TV_Score.setText(String.valueOf(value));
         }
     }
 

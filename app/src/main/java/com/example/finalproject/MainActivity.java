@@ -12,12 +12,17 @@ import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements MenuFrag.MenuFragListener,DifficultyFrag.DifficultyFragListener,ExitDialog.ExitDialogListener
@@ -47,8 +52,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.defult_setings,menu);
+        getMenuInflater().inflate(R.menu.menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public void setActionMenuFrag(String BTN) {
@@ -117,7 +124,19 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                 }
                 break;
+            case R.id.MI_Clear_Score_Board:
+                try {
+                    FileOutputStream fos = this.openFileOutput( this.getResources().getString(R.string.score_save),this.MODE_PRIVATE);
+                    fos.write(("").getBytes());
+                    fos.close();
 
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -190,6 +209,8 @@ public class MainActivity extends AppCompatActivity
             super.onCreate(savedInstanceState);
             PreferenceManager.getDefaultSharedPreferences(this.getContext()).registerOnSharedPreferenceChangeListener(this);
         }
+
+
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
