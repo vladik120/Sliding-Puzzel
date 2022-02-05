@@ -40,16 +40,17 @@ public class FragBoard extends Fragment  {
         ((Button)view.findViewById(R.id.BTN_Back_board)).setOnClickListener(new Back());
         SharedPreferences sharedPref = view.getContext().getSharedPreferences(
                 view.getContext().getResources().getString(R.string.preference_file_key), view.getContext().MODE_PRIVATE);
+
         int row = Integer.parseInt(sharedPref.getString("board_row","4"));
         // Lookup the recyclerview in activity layout
-        RecyclerView rvContacts = (RecyclerView) view.findViewById(R.id.RV_Board_Game);
+        RecyclerView rvBoard = (RecyclerView) view.findViewById(R.id.RV_Board_Game);
 
         // Create adapter passing in the sample user data
         BoardCellAdapter adapter = new BoardCellAdapter(view.getContext(),difficulty);
         // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter);
+        rvBoard.setAdapter(adapter);
         // Set layout manager to position the items
-        rvContacts.setLayoutManager(new GridLayoutManager(view.getContext(), row));
+        rvBoard.setLayoutManager(new GridLayoutManager(view.getContext(), row));
 
         super.onViewCreated(view, savedInstanceState);
     }

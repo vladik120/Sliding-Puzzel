@@ -93,14 +93,4 @@ public class Board {
 
     }
 
-    public static int checkEmpty(Cell[] board){
-        for (int i = 0; i < board.length; i++) {
-            if(board[i].getNumber().equals("-1"))
-                return i;
-        }
-        return -1;
-    }
-
-
-
 }

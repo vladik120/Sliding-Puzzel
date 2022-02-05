@@ -5,7 +5,6 @@ public class Cell {
     private String number;
 
     public Cell( String number) {
-
         this.number = number;
     }
 

@@ -37,14 +37,14 @@ public class ScoreBoard extends Fragment {
         ((Button)view.findViewById(R.id.BTN_Back_Score)).setOnClickListener(new ScoreBoard.Back());
 
         // Lookup the recyclerview in activity layout
-        RecyclerView rvContacts = (RecyclerView) view.findViewById(R.id.RV_ScoreBoard);
+        RecyclerView rvScore = (RecyclerView) view.findViewById(R.id.RV_ScoreBoard);
 
         // Create adapter passing in the sample user data
         ScoreBoardAdapter adapter = new ScoreBoardAdapter(view.getContext());
         // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter);
+        rvScore.setAdapter(adapter);
         // Set layout manager to position the items
-        rvContacts.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvScore.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         super.onViewCreated(view, savedInstanceState);
     }

@@ -27,7 +27,6 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
     private ArrayList<Integer> sortArray;
 
     public ScoreBoardAdapter(Context context) {
-        String check;
         this.context = context;
         FILENAME = context.getResources().getString(R.string.score_save);
         ScoreEmpty = ReadFromFile();
@@ -102,7 +101,7 @@ public class ScoreBoardAdapter extends RecyclerView.Adapter<ScoreBoardAdapter.Vi
             int col = Integer.valueOf(score[1]);
             int move = Integer.valueOf(score[2]);
             int time = Integer.valueOf(score[3]);
-            CharSequence  difficulty = score[4];
+            CharSequence difficulty = score[4];
 
             Log.i("ScoreBoardAdapter", "row "+ row);
             Log.i("ScoreBoardAdapter", "col "+col);
