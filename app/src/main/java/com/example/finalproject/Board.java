@@ -17,28 +17,66 @@ public class Board {
         int count=0;
         int number = 0;
         int index = 0;
+        int randomize=0;
+        int t1,t2,t3;
+        Cell temp1,temp2;
+        String[] testArr= new String[size];
+        for (int i =0; i<size;i++) {
+            testArr[i]="-1";
+        }
+        String test="";
         Arrays.fill(check, 0);
         int dif ;
         switch (difficulty){
-            case "Easy":
-                numberRand = size/3;
+            case "Easy": //randomize two places in the board only
+                for (int i = 0; i <= size-3; i++) {
+                    board[i] = new Cell(String.valueOf(i));
+                }
+                board[size-2] = null;
+                board[size-1] = new Cell(String.valueOf(size-2));
+                t1 = rand.nextInt(size-1);
+                temp1 = board[t1];
+                board[t1]=board[size-1-t1];
+                board[size-1-t1]=temp1;
                 break;
-            case "Normal":
-                numberRand = (size/4)*3;
+            case "Normal": //randomize four places in the board
+                for (int i = 0; i <= size-3; i++) {
+                    board[i] = new Cell(String.valueOf(i));
+                }
+                board[size-2] = null;
+                board[size-1] = new Cell(String.valueOf(size-2));
+                t1 = rand.nextInt(size-1);
+                temp1 = board[t1];
+                board[t1]=board[size-1-t1];
+                board[size-1-t1]=temp1;
+                t2 = rand.nextInt(size-1);
+                temp2 = board[t2];
+                board[t2]=board[size-1-t2];
+                board[size-1-t2]=temp2;
                 break;
-            case "Hard":
-                numberRand = size;
+            case "Hard": //randomize all the board
+                //make the numbers random on the board, and place null in the bottomright side of the grid.
+                board[size-1]=null;
+                for (int i=0; i<size-1; i++) {
+                    boolean found = false;
+                    int r=0;
+                    do {
+                        found=false;
+                        r = rand.nextInt(size-1);
+                        for (int j=0; j<size-1; j++) {
+                            if (testArr[j]== String.valueOf(r)) {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    while (found);
+                    testArr[i] = String.valueOf(r);
+                    board[i]=new Cell(testArr[i]);
+                }
                 break;
-
         }
 
-
-
-        for (int i = 0; i <= size-3; i++) {
-            board[i] = new Cell(String.valueOf(i));
-        }
-        board[size-2] = null;
-        board[size-1] = new Cell(String.valueOf(size-2));
         return board;
     }
 
