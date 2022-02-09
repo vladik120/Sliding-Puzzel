@@ -3,14 +3,25 @@ package com.example.finalproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,16 +34,31 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements MenuFrag.MenuFragListener,DifficultyFrag.DifficultyFragListener,ExitDialog.ExitDialogListener
         , FragBoard.FragBoardListener, BoardCellAdapter.BoardCellAdapterListener, ScoreBoard.ScoreBoardListener {
     static boolean PreferenceOpen = false;
+    BroadcastReceiver brBattery = new BatteryLowReceiver();
+    String FILENAME;
+    String CHANNEL_ID = "my_channel_01";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FILENAME = "EnteredApp.txt";
         setContentView(R.layout.activity_main);
+        try {
+            FileOutputStream fos = this.getApplicationContext().openFileOutput(FILENAME ,this.getApplicationContext().MODE_PRIVATE);
+            fos.write("True".getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         MenuFrag frag = (MenuFrag)getSupportFragmentManager().findFragmentByTag("MENUFRAG");
         FragmentContainerView fragBContainer = findViewById(R.id.MainFragCon);
         if (frag != null) {
@@ -165,8 +191,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExitClick() {
+        //onBackPressed();
         finish();
         System.exit(0);
+
     }
 
     @Override
@@ -205,6 +233,38 @@ public class MainActivity extends AppCompatActivity
                 .commit();
         getSupportFragmentManager().executePendingTransactions();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction((Intent.ACTION_BATTERY_LOW));
+        registerReceiver(brBattery, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(brBattery);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        FILENAME = "EnteredApp.txt";
+        try {
+            FileOutputStream fos = this.getApplicationContext().openFileOutput( FILENAME ,this.getApplicationContext().MODE_PRIVATE);
+            fos.write("False".getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        WorkRequest uploadWorkRequest = new OneTimeWorkRequest.Builder(MissedYouWorker.class).setInitialDelay(10, TimeUnit.SECONDS).build();
+        WorkManager.getInstance(this.getApplicationContext()).enqueue(uploadWorkRequest);
+        super.onStop();
+    }
+
 
     public static class MySettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
         private final int MinSize = 3;
@@ -267,8 +327,6 @@ public class MainActivity extends AppCompatActivity
             BoardSize.setTitle("Board size is "+row+"X"+col);
 
         }
-
-
 
         public void ToastMessage(CharSequence  MSG){
             Toast msg = Toast.makeText(this.getContext(),MSG,Toast.LENGTH_SHORT);
