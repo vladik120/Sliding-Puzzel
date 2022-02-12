@@ -50,6 +50,7 @@ public class MissedYouWorker extends Worker {
                 convert = convert.substring(0, numberOfBytes);
                 if (convert.equals("False")) {
                     //display notification.
+                    //test
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(),CHANNEL_ID);
                     builder.setContentTitle("Test title");
                     builder.setContentText("Test Text");
