@@ -43,21 +43,27 @@ public class MainActivity extends AppCompatActivity
     BroadcastReceiver brBattery = new BatteryLowReceiver();
     String FILENAME;
     String CHANNEL_ID = "my_channel_01";
+    private static boolean activityVisible;
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FILENAME = "EnteredApp.txt";
         setContentView(R.layout.activity_main);
-        try {
-            FileOutputStream fos = this.getApplicationContext().openFileOutput(FILENAME ,this.getApplicationContext().MODE_PRIVATE);
-            fos.write("True".getBytes());
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        activityResumed();
+        WorkRequest uploadWorkRequest = new OneTimeWorkRequest.Builder(MissedYouWorker.class).build(); //.setInitialDelay(10, TimeUnit.SECONDS)
+        WorkManager.getInstance(this.getApplicationContext()).enqueue(uploadWorkRequest);
 
         MenuFrag frag = (MenuFrag)getSupportFragmentManager().findFragmentByTag("MENUFRAG");
         FragmentContainerView fragBContainer = findViewById(R.id.MainFragCon);
@@ -179,7 +185,7 @@ public class MainActivity extends AppCompatActivity
 
     void showDialogExit() {
         FragmentManager fm = getSupportFragmentManager();
-        ExitDialog exitDialog = ExitDialog.newInstance("Closing the application");
+        ExitDialog exitDialog = ExitDialog.newInstance("Closing the application",this);
         exitDialog.show(fm, "fragment_alert");
     }
 
@@ -191,9 +197,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExitClick() {
-        //onBackPressed();
+        activityPaused();
         finish();
-        System.exit(0);
+//        System.exit(0);
 
     }
 
@@ -245,24 +251,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         unregisterReceiver(brBattery);
+        activityPaused();
         super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        FILENAME = "EnteredApp.txt";
-        try {
-            FileOutputStream fos = this.getApplicationContext().openFileOutput( FILENAME ,this.getApplicationContext().MODE_PRIVATE);
-            fos.write("False".getBytes());
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        WorkRequest uploadWorkRequest = new OneTimeWorkRequest.Builder(MissedYouWorker.class).setInitialDelay(10, TimeUnit.SECONDS).build();
-        WorkManager.getInstance(this.getApplicationContext()).enqueue(uploadWorkRequest);
-        super.onStop();
     }
 
 

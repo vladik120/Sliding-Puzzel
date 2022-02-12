@@ -28,6 +28,7 @@ public class MissedYouWorker extends Worker {
     private String FILENAME="EnteredApp.txt";
     String CHANNEL_ID = "my_channel_01";
     NotificationManager mNotiMgr;
+    Boolean check=false;
     public MissedYouWorker(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
@@ -41,34 +42,27 @@ public class MissedYouWorker extends Worker {
             NotificationManager manager = this.getApplicationContext().getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
-        try {
-            FileInputStream fin = this.getApplicationContext().openFileInput(FILENAME);
-            ByteBuffer bf = ByteBuffer.allocate(1000 * 10);
-            int numberOfBytes = fin.read(bf.array());
-            if (numberOfBytes != -1) {
-                String convert = new String(bf.array());
-                convert = convert.substring(0, numberOfBytes);
-                if (convert.equals("False")) {
-                    //display notification.
-                    //test
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(),CHANNEL_ID);
-                    builder.setContentTitle("Test title");
-                    builder.setContentText("Test Text");
-                    builder.setSmallIcon(R.drawable.ic_launcher_background);
-                    builder.setAutoCancel(true);
+        while (!check) {
+            if (!MainActivity.isActivityVisible()) {
+                try {
+                    Thread.sleep(10000); //just for testing, should be around 3 days.
 
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getApplicationContext());
-                    managerCompat.notify(1,builder.build());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                return Result.success();
+                //display notification.
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID);
+                builder.setContentTitle("Sliding Puzzle");
+                builder.setContentText("We missed you, please come back!");
+                builder.setSmallIcon(R.drawable.ic_launcher_background);
+                builder.setAutoCancel(true);
+
+                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getApplicationContext());
+                managerCompat.notify(1, builder.build());
+                check=true;
             }
-            fin.close();
-            return null; //here write what we wanna do as a service.
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
-        return Result.failure();
+        return Result.success();
     }
 }

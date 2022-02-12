@@ -9,11 +9,13 @@ import androidx.fragment.app.DialogFragment;
 
 public class ExitDialog extends DialogFragment {
 
+    public static ExitDialogListener listener;
     public ExitDialog() {
         // Empty constructor required for DialogFragment
     }
 
-    public static ExitDialog newInstance(String title) {
+    public static ExitDialog newInstance(String title, MainActivity mainActivity) {
+        listener = (ExitDialogListener) mainActivity;
         ExitDialog frag = new ExitDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -30,7 +32,6 @@ public class ExitDialog extends DialogFragment {
         alertDialogBuilder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ExitDialogListener listener = (ExitDialogListener) getParentFragment();
                 listener.onExitClick();
                 dismiss();
             }
