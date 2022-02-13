@@ -51,15 +51,17 @@ public class MissedYouWorker extends Worker {
                     e.printStackTrace();
                 }
                 //display notification.
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID);
-                builder.setContentTitle("Sliding Puzzle");
-                builder.setContentText("We missed you, please come back!");
-                builder.setSmallIcon(R.drawable.ic_launcher_background);
-                builder.setAutoCancel(true);
+                if (!MainActivity.isActivityVisible()) {
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID);
+                    builder.setContentTitle("Sliding Puzzle");
+                    builder.setContentText("We missed you, please come back!");
+                    builder.setSmallIcon(R.drawable.ic_launcher_background);
+                    builder.setAutoCancel(true);
 
-                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getApplicationContext());
-                managerCompat.notify(1, builder.build());
-                check=true;
+                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getApplicationContext());
+                    managerCompat.notify(1, builder.build());
+                    check = true;
+                }
             }
 
         }
