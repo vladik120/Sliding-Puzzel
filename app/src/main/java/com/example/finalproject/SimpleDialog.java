@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Window;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -28,15 +30,18 @@ public class SimpleDialog extends DialogFragment {
         String text = getArguments().getString("text");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
-        alertDialogBuilder.setTitle("                  "+title);
-        alertDialogBuilder.setMessage("                    "+text);
+        alertDialogBuilder.setTitle("                "+title);
+        alertDialogBuilder.setMessage(text);
         alertDialogBuilder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });
-
-        return alertDialogBuilder.create();
+        AlertDialog dialog = alertDialogBuilder.show();
+        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+        return dialog;
+        //return alertDialogBuilder.create();
     }
 }
